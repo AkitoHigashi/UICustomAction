@@ -1,48 +1,60 @@
+using System;
 using UnityEngine;
 
 public class HPCore : MonoBehaviour
 {
-    private IHPStrategy _currentHPStrategy;
-
     private bool _isDead = false;
+    private IHPSticker _currentHPSticker;
 
-    //ダメージ通知を受け取った時に呼び出すメソッド
-    public void ReceiveDamage(float damage)
+    public IHPSticker CurrentSticker => _currentHPSticker;
+    public bool IsDead => _isDead;
+
+    public event Action OnPlayerDead;
+    /// <summary>ステッカーに装着</summary>
+    public void AttachToSticker(IHPSticker newSticker)
     {
-        if (_isDead) return;
-
-        if (_currentHPStrategy == null) return;
-
-        // HPとして無効ならダメージを渡さない
-        if (!_currentHPStrategy.IsActive()) return;
-
-        bool isAlive = _currentHPStrategy.TakeDamage(damage);
-
-        if(!isAlive)
+        if (newSticker == null)
         {
-            Die();
+            Debug.Log("ステッカー無いぞ");
+            return;
+        }
+
+        float raito = 1f;
+
+        if (_currentHPSticker != null)
+        {
+            //HP割合の取得
+            raito = _currentHPSticker.GetHPRaito();
+        }
+
+        _currentHPSticker = newSticker;
+        //HPの割合を引き継ぐ
+        _currentHPSticker.SetHPRatio(raito);
+
+        _isDead = raito <= 0f;
+
+    }
+
+    public void ApplyDamage(int damage)
+    {
+        if (_currentHPSticker == null)
+        {
+            Debug.Log("ステッカー無いぞからダメージ処理無理");
+            return;
+        }
+        //ダメージ処理
+        _currentHPSticker.ApplyDamage(damage);
+
+        if (_currentHPSticker.GetHPRaito() <= 0f && !_isDead)
+        {
+            _isDead = true;
+            //死亡イベントを起動
+            OnPlayerDead?.Invoke();
         }
     }
-    /// <summary>
-    /// コアをステッカーに装備時そのステッカーを登録するメソッド
-    /// </summary>
-    /// <param name="hPSticker"></param>
-    public void AttachToSticker(IHPStrategy hPSticker)
+    /// <summary>ステッカーから着脱、あとで実装</summary>
+    public void detachFromSticker(IHPSticker currentSticker)
     {
-        _currentHPStrategy = hPSticker;
-    }
-    /// <summary>
-    /// コアをステッカーに着脱時そのステッカーを解除するメソッド
-    /// </summary>
-    public void RemoveFromSticker()
-    {
-        _currentHPStrategy = null;
-    }
-    //死んだときに呼び出す
-    private void Die()
-    {
-        _isDead = true;
-        Debug.Log("Playerはしんだ");
-    }
 
+    }
 }
