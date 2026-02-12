@@ -30,6 +30,7 @@ public class HPCore : MonoBehaviour
         _currentHPSticker = newSticker;
         //HP‚ÌŠ„‡‚ğˆø‚«Œp‚®
         _currentHPSticker.SetHPRatio(raito);
+        _currentHPSticker.UpdateUI();
 
         _isDead = raito <= 0f;
 
@@ -44,6 +45,7 @@ public class HPCore : MonoBehaviour
         }
         //ƒ_ƒ[ƒWˆ—
         _currentHPSticker.ApplyDamage(damage);
+        _currentHPSticker.UpdateUI();
 
         if (_currentHPSticker.GetHPRaito() <= 0f && !_isDead)
         {

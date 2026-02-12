@@ -1,14 +1,23 @@
 using UnityEngine;
-
-public class GaugeSticker : MonoBehaviour,IHPSticker
+using UnityEngine.UI;
+using DG.Tweening;
+public class GaugeSticker : MonoBehaviour, IHPSticker
 {
-    [SerializeField,Header("ゲージの最大数値")] private int _maxVaule = 100;
-    private int _currentVaule;
+    [SerializeField, Header("ゲージの最大数値")] private int _maxVaule = 100;
+    private Slider _sliders;
 
+    private int _currentVaule;
 
     private void Awake()
     {
+        _sliders = GetComponent<Slider>();
         _currentVaule = _maxVaule;
+    }
+
+    public void UpdateUI()
+    {
+        float target = (float)_currentVaule / _maxVaule;
+        _sliders.DOValue(target, 0.3f);
     }
 
     #region HPCore
@@ -16,7 +25,7 @@ public class GaugeSticker : MonoBehaviour,IHPSticker
     {
         _currentVaule -= damege;
         //0以下にならないように
-       _currentVaule = Mathf.Max(_currentVaule, 0);
+        _currentVaule = Mathf.Max(_currentVaule, 0);
     }
 
     public float GetHPRaito()

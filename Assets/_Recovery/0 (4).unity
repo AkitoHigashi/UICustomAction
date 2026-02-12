@@ -319,7 +319,7 @@ GameObject:
   - component: {fileID: 178096923}
   - component: {fileID: 178096922}
   m_Layer: 5
-  m_Name: KAIJO
+  m_Name: Kaijo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

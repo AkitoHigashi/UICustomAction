@@ -9,5 +9,7 @@ public interface IHPSticker
 
     /// <summary>HPŠ„‡‚ğİ’è </summary>
     void SetHPRatio(float ratio);
+
+    void UpdateUI();
 }
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MoveSticker : MonoBehaviour, IDragHandler
+public class StickerMove : MonoBehaviour, IDragHandler
 {
     private RectTransform _rectTransform;
     private void Start()

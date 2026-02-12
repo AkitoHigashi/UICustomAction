@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class CoreDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private RectTransform _rectTransform;
+    private Image _image;
     private Vector2 _startPos;
 
     private bool _isDroped = false;
@@ -11,6 +13,7 @@ public class CoreDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private void Start()
     {
         _rectTransform = GetComponent<RectTransform>();
+        _image = GetComponent<Image>();
     }
     public void OnDrag(PointerEventData eventData)
     {
@@ -21,6 +24,7 @@ public class CoreDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         _startPos = _rectTransform.position;
         _isDroped = false;
+        _image.raycastTarget = false;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -29,6 +33,7 @@ public class CoreDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         {
             _rectTransform.position = _startPos;
         }
+        _image.raycastTarget = true;
     }
 
     public void DropToSticker()

@@ -1,8 +1,10 @@
+using UnityEditor;
 using UnityEngine;
 
 public class IconSticker : MonoBehaviour, IHPSticker
 {
     [SerializeField, Header("アイコンの最大個数")] private int _maxCountVaule = 5;
+    [SerializeField, Header("アイコンの見た目")] private GameObject _iconView;
     private int _currentCountVaule;
 
     //受けるダメージ数
@@ -11,6 +13,19 @@ public class IconSticker : MonoBehaviour, IHPSticker
     public void Awake()
     {
         _currentCountVaule = _maxCountVaule;
+        CreateIcon();
+    }
+    public void UpdateUI()
+    {
+
+    }
+    public void CreateIcon()
+    {
+        for (int i = 0; i < _currentCountVaule; i++)
+        {
+            GameObject icon = Instantiate(_iconView);
+            icon.transform.SetParent(transform);
+        }
     }
     #region HPCore
     public void ApplyDamage(int damege)
@@ -29,5 +44,6 @@ public class IconSticker : MonoBehaviour, IHPSticker
     {
         _currentCountVaule = Mathf.RoundToInt(_maxCountVaule * ratio);
     }
+
     #endregion
 }
