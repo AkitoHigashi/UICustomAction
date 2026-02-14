@@ -1,13 +1,14 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.EventSystems;
 /// <summary>
-/// ƒXƒeƒbƒJ[‚É‚Â‚¯‚é‘•”õ—p‚ÌƒXƒNƒŠƒvƒg
+/// ã‚¹ãƒ†ãƒƒã‚«ãƒ¼å´ã«ã¤ã‘ã‚‹ã‚¹ã‚¯ãƒªãƒ—ãƒˆ(ã‚¢ã‚¤ãƒ†ãƒ è£…å‚™ç”¨)
 /// </summary>
 public class StickerSlot : MonoBehaviour, IDropHandler
 {
-    [SerializeField] GameObject _slot;
-    private HPCore _hpCore;
+    [SerializeField] private GameObject _slot;
+
     private IHPSticker _thisSticker;
+    private HPCore _hpCore;
 
     private void Awake()
     {
@@ -15,25 +16,38 @@ public class StickerSlot : MonoBehaviour, IDropHandler
     }
     public void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag != null)
+        Debug.Log("ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚ã‚‹ã‹ãƒã‚§ãƒƒã‚¯");
+        if (eventData.pointerDrag == null) return;
+
+        var dropObj = eventData.pointerDrag;
+
+        var coreDrag = dropObj.GetComponent<CoreDrag>();
+
+        if (coreDrag != null)
         {
-            Debug.Log("ƒhƒƒbƒv‚³‚ê‚½");
-            var coreDrag = eventData.pointerDrag.gameObject.GetComponent<CoreDrag>();
-            Debug.Log("ƒRƒAƒhƒ‰ƒbƒO‚Ä‚é‚©ƒ`ƒFƒbƒN");
-            if (coreDrag == null) return;
+            var core = dropObj.GetComponent<HPCore>();
 
-            _hpCore = coreDrag.GetComponent<HPCore>();
-            Debug.Log("ƒRƒA‚Á‚Ä‚é‚©ƒ`ƒFƒbƒN");
-            if (_hpCore == null) return;
+            //ã‚³ã‚¢ã‚’ã‚¹ãƒ†ãƒƒã‚«ãƒ¼ã«è£…ç€ï¼ˆå†…éƒ¨ï¼‰
+            core.AttachToSticker(_thisSticker);
 
-            _hpCore.AttachToSticker(_thisSticker);
-
-            //isDrop‚ğ•ÏX
+            //isDropã‚’å¤‰æ›´
             coreDrag.DropToSticker();
-            //ƒRƒA‚ğƒXƒeƒbƒJ[ƒXƒƒbƒg‚ÌqƒIƒuƒWƒFƒNƒg‚É
+            //ã‚³ã‚¢UIã®è¦‹ãŸç›®ã‚’è£…ç€
             coreDrag.transform.SetParent(_slot.transform);
-            //ƒRƒA‚ÌˆÊ’u‚ğƒXƒeƒbƒJ[ƒXƒƒbƒg‚Æ‡‚í‚¹‚é‚½‚ß‚Éƒ|ƒWƒVƒ‡ƒ“‚O‚É–ß‚·B
             coreDrag.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        }
+
+        //è§£é™¤è£…ç½®ã‹ã‚’ãƒã‚§ãƒƒã‚¯
+        var remover = dropObj.GetComponent<RemoveTool>();
+        if (remover != null)
+        {
+            RemoveItem();
+        }
+    }
+    private void RemoveItem()
+    {
+        if (_slot != null)
+        {
 
         }
     }

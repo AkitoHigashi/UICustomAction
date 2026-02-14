@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 
 public class HPCore : MonoBehaviour
@@ -10,12 +10,12 @@ public class HPCore : MonoBehaviour
     public bool IsDead => _isDead;
 
     public event Action OnPlayerDead;
-    /// <summary>ƒXƒeƒbƒJ[‚É‘•’…</summary>
+    /// <summary>ã‚¹ãƒ†ãƒƒã‚«ãƒ¼ã«è£…ç€</summary>
     public void AttachToSticker(IHPSticker newSticker)
     {
         if (newSticker == null)
         {
-            Debug.Log("ƒXƒeƒbƒJ[–³‚¢‚¼");
+            Debug.Log("ã‚¹ãƒ†ãƒƒã‚«ãƒ¼ç„¡ã„ã");
             return;
         }
 
@@ -23,12 +23,12 @@ public class HPCore : MonoBehaviour
 
         if (_currentHPSticker != null)
         {
-            //HPŠ„‡‚Ìæ“¾
+            //HPå‰²åˆã®å–å¾—
             raito = _currentHPSticker.GetHPRaito();
         }
 
         _currentHPSticker = newSticker;
-        //HP‚ÌŠ„‡‚ğˆø‚«Œp‚®
+        //HPã®å‰²åˆã‚’å¼•ãç¶™ã
         _currentHPSticker.SetHPRatio(raito);
         _currentHPSticker.UpdateUI();
 
@@ -40,22 +40,22 @@ public class HPCore : MonoBehaviour
     {
         if (_currentHPSticker == null)
         {
-            Debug.Log("ƒXƒeƒbƒJ[–³‚¢‚¼‚©‚çƒ_ƒ[ƒWˆ—–³—");
+            Debug.Log("ã‚¹ãƒ†ãƒƒã‚«ãƒ¼ç„¡ã„ãã‹ã‚‰ãƒ€ãƒ¡ãƒ¼ã‚¸å‡¦ç†ç„¡ç†");
             return;
         }
-        //ƒ_ƒ[ƒWˆ—
+        //ãƒ€ãƒ¡ãƒ¼ã‚¸å‡¦ç†
         _currentHPSticker.ApplyDamage(damage);
         _currentHPSticker.UpdateUI();
 
         if (_currentHPSticker.GetHPRaito() <= 0f && !_isDead)
         {
             _isDead = true;
-            //€–SƒCƒxƒ“ƒg‚ğ‹N“®
+            //æ­»äº¡ã‚¤ãƒ™ãƒ³ãƒˆã‚’èµ·å‹•
             OnPlayerDead?.Invoke();
         }
     }
-    /// <summary>ƒXƒeƒbƒJ[‚©‚ç’…’EA‚ ‚Æ‚ÅÀ‘•</summary>
-    public void detachFromSticker(IHPSticker currentSticker)
+    /// <summary>ã‚¹ãƒ†ãƒƒã‚«ãƒ¼ã‹ã‚‰ç€è„±ã€ã‚ã¨ã§å®Ÿè£…</summary>
+    public void DetachFromSticker()
     {
 
     }
